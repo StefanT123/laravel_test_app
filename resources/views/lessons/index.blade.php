@@ -28,7 +28,7 @@
 
 								$user_sessions = $session->users->find(Auth::user())['pivot']['session_id'];
 								$s_id = (int)$user_sessions + 1;
-								$s_slug = $session->find($s_id)['slug'];
+								$s_slug = $lesson->sessions->find($s_id)['slug'];
 								$session_lesson_id = $session->lesson_id;
 
 							?>
@@ -46,7 +46,14 @@
 
 							@endif
 
-							@if ( in_array(Auth::user()->id, $user_ids) && in_array($user_sessions, $session_ids) && $session_lesson_id == $lesson->id)
+							@if ( 	in_array(Auth::user()->id, $user_ids)
+									&&
+									in_array($user_sessions, $session_ids)
+									&&
+									$session_lesson_id == $lesson->id
+									&&
+									$lesson->sessions->find($s_id)
+								)
 
 								<li><a href="/session/{{ $s_slug }}">{{ $lesson->sessions->find($s_id)['title'] }}</a></li>
 
